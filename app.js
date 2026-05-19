@@ -104,11 +104,22 @@ async function loadData() {
     const stationsJson = await stationsResponse.json();
     const stations = stationsJson.Stations || [];
 
-    renderJumpLinks(records, "ELEVATOR");
-    renderJumpLinks(records, "ESCALATOR");
+    let sortedRecords = records
+      .map(record => {
+        record.StationName = fixStationNameWithComma(record.StationName, record.StationCode, stations)
+        return record;
+      })
+      .sort(
+        (current,next) => {
+          return current.StationName.localeCompare(next.StationName)
+      }
+     );
 
-    renderTable(records, "ELEVATOR", tableBodyElev, stations);
-    renderTable(records, "ESCALATOR", tableBodyEsc, stations);
+    renderJumpLinks(sortedRecords, "ELEVATOR");
+    renderJumpLinks(sortedRecords, "ESCALATOR");
+
+    renderTable(sortedRecords, "ELEVATOR", tableBodyElev, stations);
+    renderTable(sortedRecords, "ESCALATOR", tableBodyEsc, stations);
 
     // statusEl.textContent = `Loaded ${records.length} records`;
   } catch (err) {
@@ -151,21 +162,16 @@ function renderTable(records, type, tableBody, stations) {
     return;
   }
 
-  let sortedRecords = records
-    .filter(record => record.UnitType === type)
-    .sort(
-      (current,next) => {
-        return current.StationName.localeCompare(next.StationName)
-      }
-     );
+  let subsetRecords = records
+    .filter(record => record.UnitType === type);
 
 
-  for (const record of sortedRecords) {
+  for (const record of subsetRecords) {
     const rowHead = document.createElement("tr");
     const row = document.createElement("tr");
     const rowSub = document.createElement("tr");
 
-    const name = record.StationName ?? "";
+    const name = record.StationName; 
     const initial = name.charAt(0).toUpperCase();
 
     const lines = getLineColors(stations, record.StationCode);
@@ -187,15 +193,6 @@ function renderTable(records, type, tableBody, stations) {
       lineContainer.classList.add("lineIndicator");
       lineContainer.style.backgroundColor = colors[line] || "#000";
       lineContainer.style.color = colorsText[line] || "#FFF";
-      lineContainer.style.fontweight = "bold";
-      lineContainer.style.width = "1.5rem";
-      lineContainer.style.height = "1.5rem";
-      lineContainer.style.display = "inline-flex";
-      lineContainer.style.justifyContent = "center";
-      lineContainer.style.alignItems = "center";
-      lineContainer.style.marginLeft = "2px";
-      lineContainer.style.marginRight = "2px";
-      lineContainer.style.borderRadius = "50%";
       lineContainer.innerHTML += line.charAt(0);
       linesContainer.appendChild(lineContainer);
     });
@@ -263,6 +260,18 @@ function getLineColors(stations, stationCode) {
 
 
     return lines;
+}
+
+function fixStationNameWithComma(str, stationCode, stations) {
+  const commaIndex = str.indexOf(",");
+  const st = stations.filter(station => station.Code === stationCode)[0];
+
+  if (commaIndex !== -1) {
+    
+    return st.Name + str.slice(commaIndex);
+  }
+
+  return st.Name;
 }
 
 // refreshBtn.addEventListener("click", loadData);
