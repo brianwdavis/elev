@@ -183,10 +183,11 @@ function renderTable(records, type, tableBody, stations) {
     const friendlyTime = getFriendlyTime(outReport);
 
     rowHead.innerHTML = `
-      <td colspan="3" class="headRow" id="row-${initial}">${escapeHtml(name)}</td>
+      <td colspan="3" class="headRow" id="row-${initial}">${escapeHtml(name)+`&nbsp;`}</td>
     `;
 
     const linesContainer = document.createElement("span");
+    linesContainer.style.whiteSpace = "nowrap";
 
     lines.forEach((line) => {
       lineContainer = document.createElement("span");
