@@ -7,12 +7,21 @@ const elevIcon = `<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox=
 const escIcon = `<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000"><path d="M280-240h132l200-360h68q25 0 42.5-17.5T740-660q0-25-17.5-42.5T680-720H548L348-360h-68q-25 0-42.5 17.5T220-300q0 25 17.5 42.5T280-240Zm-80 120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"/></svg>`
 
 const colors = {
-  GR: "#09f70db6",
-  YL: "#c2cd4e",
-  RD: "#f40505",
-  SV: "#98969bcf",
-  OR: "#ff9f43",
-  BL: "#032cf8"
+  GR: "#00B140",
+  YL: "#FFD100",
+  RD: "#C80F2D",
+  SV: "#919D9D",
+  OR: "#ED8B00",
+  BL: "#009CDE"
+};
+
+const colorsText = {
+  GR: "#FFF",
+  YL: "#000",
+  RD: "#FFF",
+  SV: "#000",
+  OR: "#000",
+  BL: "#FFF"
 };
 
 const gearButton = document.getElementById("gearButton");
@@ -45,11 +54,7 @@ function getCookie(name) {
   return "";
 }
 
-function validateCookie(value) {
-  // check value for only hex characters, length 32
-  const hexRegex = /^[0-9a-fA-F]{32}$/;
-  return hexRegex.test(value);
-}
+
 
 // Load saved value on page load
 window.addEventListener("DOMContentLoaded", () => {
@@ -59,7 +64,7 @@ window.addEventListener("DOMContentLoaded", () => {
 userText.addEventListener("input", () => {
   setCookie("savedUserText", userText.value);
 })
-///
+
 
 
 async function loadData() {
@@ -69,16 +74,16 @@ async function loadData() {
     //const response = await fetch("./example.json", {
     //  cache: "no-store"
     //});
-    //if (!validateCookie(getCookie("savedUserText"))) {
-      const response = await fetch("https://api.wmata.com/Incidents.svc/json/ElevatorIncidents", {
-        method: "GET", // or POST depending on the API
-        headers: {
-          "api_key": getCookie("savedUserText"),
-          'Cache-Control': 'no-cache',
-          "Content-Type": "application/json"
-        }
-      });
-    //}
+
+    const response = await fetch("https://api.wmata.com/Incidents.svc/json/ElevatorIncidents", {
+      method: "GET", // or POST depending on the API
+      headers: {
+        "api_key": getCookie("savedUserText"),
+        'Cache-Control': 'no-cache',
+        "Content-Type": "application/json"
+      }
+    });
+
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
@@ -181,11 +186,17 @@ function renderTable(records, type, tableBody, stations) {
       lineContainer = document.createElement("span");
       lineContainer.classList.add("lineIndicator");
       lineContainer.style.backgroundColor = colors[line] || "#000";
+      lineContainer.style.color = colorsText[line] || "#FFF";
+      lineContainer.style.fontweight = "bold";
       lineContainer.style.width = "1.5rem";
       lineContainer.style.height = "1.5rem";
-      lineContainer.style.display = "inline-block";
-      lineContainer.style.marginRight = "4px";
-      lineContainer.innerHTML += line
+      lineContainer.style.display = "inline-flex";
+      lineContainer.style.justifyContent = "center";
+      lineContainer.style.alignItems = "center";
+      lineContainer.style.marginLeft = "2px";
+      lineContainer.style.marginRight = "2px";
+      lineContainer.style.borderRadius = "50%";
+      lineContainer.innerHTML += line.charAt(0);
       linesContainer.appendChild(lineContainer);
     });
 
