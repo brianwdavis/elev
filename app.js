@@ -70,7 +70,7 @@ async function loadData() {
     //  cache: "no-store"
     //});
     //if (!validateCookie(getCookie("savedUserText"))) {
-      const response = await fetch("http://api.wmata.com/Incidents.svc/json/ElevatorIncidents", {
+      const response = await fetch("https://api.wmata.com/Incidents.svc/json/ElevatorIncidents", {
         method: "GET", // or POST depending on the API
         headers: {
           "api_key": getCookie("savedUserText"),
