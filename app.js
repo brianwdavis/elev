@@ -45,6 +45,12 @@ function getCookie(name) {
   return "";
 }
 
+function validateCookie(value) {
+  // check value for only hex characters, length 32
+  const hexRegex = /^[0-9a-fA-F]{32}$/;
+  return hexRegex.test(value);
+}
+
 // Load saved value on page load
 window.addEventListener("DOMContentLoaded", () => {
   userText.value = getCookie("savedUserText");
@@ -60,9 +66,19 @@ async function loadData() {
   // statusEl.textContent = "Loading...";
 
   try {
-    const response = await fetch("./example.json", {
-      cache: "no-store"
-    });
+    //const response = await fetch("./example.json", {
+    //  cache: "no-store"
+    //});
+    //if (!validateCookie(getCookie("savedUserText"))) {
+      const response = await fetch("http://api.wmata.com/Incidents.svc/json/ElevatorIncidents", {
+        method: "GET", // or POST depending on the API
+        headers: {
+          "api_key": getCookie("savedUserText"),
+          'Cache-Control': 'no-cache',
+          "Content-Type": "application/json"
+        }
+      });
+    //}
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
