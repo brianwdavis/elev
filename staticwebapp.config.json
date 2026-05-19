@@ -1,0 +1,10 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": [
+      "/example.json",
+      "/styles.css",
+      "/app.js"
+    ]
+  }
+}
