@@ -4,7 +4,7 @@
 
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   background: #f4f6f8;
   color: #222;
 }
@@ -130,9 +130,9 @@ tbody tr:hover {
 }
 
 span.lineIndicator {
-  font-weight: medium;
-  width: 1.5rem;
-  height: 1.5rem;
+  font-weight: bold;
+  width: 1.7rem;
+  height: 1.7rem;
   display: inline-flex;
   justify-content: center;
   align-items: center;
