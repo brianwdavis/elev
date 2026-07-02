@@ -131,8 +131,8 @@ tbody tr:hover {
 
 span.lineIndicator {
   font-weight: bold;
-  width: 1.7rem;
-  height: 1.7rem;
+  width: 1.5rem;
+  height: 1.5rem;
   display: inline-flex;
   justify-content: center;
   align-items: center;
