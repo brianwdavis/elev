@@ -264,11 +264,14 @@ function getLineColors(stations, stationCode) {
 }
 
 function fixStationNameWithComma(str, stationCode, stations) {
-  const commaIndex = str.indexOf(",");
+  if (str == null) {
+    str = "";
+  }
+        
   const st = stations.filter(station => station.Code === stationCode)[0];
+  const commaIndex = str.indexOf(",");
 
   if (commaIndex !== -1) {
-    
     return st.Name + str.slice(commaIndex);
   }
 
